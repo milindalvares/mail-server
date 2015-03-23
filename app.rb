@@ -38,8 +38,8 @@ post '/contact/:account' do
 		:via_options => {
 			  :address              => 'smtp.sendgrid.net', 
 	        :port                 => '587', 
-				:user_name            => 'hashcookies', 
-				:password             => 'Nor1nderchqMudi',  
+				:user_name            => '', 
+				:password             => '',  
 	        :authentication       => :plain
 		}
 	)
