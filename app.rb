@@ -7,6 +7,8 @@ configure do
 	enable :cross_origin
 end
 
+
+
 get '/hi' do
 	erb :home
 end
