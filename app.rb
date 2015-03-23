@@ -11,6 +11,10 @@ get '/hi' do
 	erb :home
 end
 
+get '/' do
+	"Hello"
+end
+
 post '/contact' do
 	name = params[:name]
 	project_type = params[:project_type]
