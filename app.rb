@@ -17,7 +17,12 @@ get '/' do
 	"Hello"
 end
 
-post '/contact' do
+post '/contact/:account' do
+	if params[:account] == "hashcookies"
+		account = "milind@hashcooki.es"
+	else
+		account = "milindalvares@me.com"
+	end
 	name = params[:name]
 	project_type = params[:project_type]
 	email = params[:email]
@@ -26,15 +31,15 @@ post '/contact' do
 	cm_original = params[:original]
 	Pony.mail(
 		:from => "#{name}<milind@hashcooki.es>",
-		:to => 'milind@hashcooki.es',
+		:to => account,
 		:subject => "Hash Cookies Request",
 		:html_body => "Project Pype: #{project_type}<br /> Message: #{message}<br /> Phone: #{phone}<br /> email: #{email}<br /> Original: #{cm_original}",
 		:via => :smtp,
 		:via_options => {
 			  :address              => 'smtp.sendgrid.net', 
 	        :port                 => '587', 
-	        :user_name            => '', 
-	        :password             => '', 
+				:user_name            => 'hashcookies', 
+				:password             => 'Nor1nderchqMudi',  
 	        :authentication       => :plain
 		}
 	)
