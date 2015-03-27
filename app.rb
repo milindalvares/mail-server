@@ -18,22 +18,38 @@ get '/' do
 end
 
 post '/contact/:account' do
+	account = "goobimama@me.com"
+	
 	if params[:account] == "hashcookies"
 		account = "milind@hashcooki.es"
-	else
+		account_subject = "Hash Cookies Form"
+	elsif params[:account] == "yellowledger"
 		account = "milindalvares@me.com"
+		account_subject = "Yellow Ledger Form"
 	end
+	
 	name = params[:name]
-	project_type = params[:project_type]
 	email = params[:email]
 	phone = params[:phone]
+	project_type = params[:project_type]
 	message = params[:message]
 	cm_original = params[:original]
+	page_url = params[:page_url]
+	
+	body = ""
+	body << "<strong>Name:</strong> #{name}<br />" unless name.nil?
+	body << "<strong>Email:</strong> #{email}<br />" unless email.nil?
+	body << "<strong>Phone:</strong> #{phone}<br />" unless phone.nil?
+	body << "<strong>Project Type:</strong> #{project_type}<br />" unless project_type.nil?
+	body << "<strong>Original Message:</strong> #{cm_original}<br />" unless name.nil?
+	body << "<strong>Message:</strong><br /> #{message}<br />" unless message.nil?
+	body << "<strong>Sent From Page:</strong> #{page_url}<br />" unless page_url.nil?
+	
 	Pony.mail(
 		:from => "#{name}<milind@hashcooki.es>",
 		:to => account,
-		:subject => "Hash Cookies Request",
-		:html_body => "Project Pype: #{project_type}<br /> Message: #{message}<br /> Phone: #{phone}<br /> email: #{email}<br /> Original: #{cm_original}",
+		:subject => account_subject,
+		:html_body => body,
 		:via => :smtp,
 		:via_options => {
 			  :address              => 'smtp.sendgrid.net', 
