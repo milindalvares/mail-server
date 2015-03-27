@@ -34,7 +34,7 @@ post '/contact/:account' do
 	project_type = params[:project_type]
 	message = params[:message]
 	cm_original = params[:original]
-	page_url = params[:page_url]
+	page_url = request.referrer
 	
 	body = ""
 	body << "<strong>Name:</strong> #{name}<br />" unless name.nil?
@@ -43,7 +43,7 @@ post '/contact/:account' do
 	body << "<strong>Project Type:</strong> #{project_type}<br />" unless project_type.nil?
 	body << "<strong>Original Message:</strong> #{cm_original}<br />" unless name.nil?
 	body << "<strong>Message:</strong><br /> #{message}<br />" unless message.nil?
-	body << "<strong>Sent From Page:</strong> #{page_url}<br />" unless page_url.nil?
+	body << "<br />Sent From Page: #{page_url}"
 	
 	Pony.mail(
 		:from => "#{name}<milind@hashcooki.es>",
@@ -54,8 +54,8 @@ post '/contact/:account' do
 		:via_options => {
 			  :address              => 'smtp.sendgrid.net', 
 	        :port                 => '587', 
-				:user_name            => '', 
-				:password             => '',  
+				:user_name            => 'milind@hashcooki.es', 
+				:password             => 'N_y81H9kFFX5E9DObShfLA',  
 	        :authentication       => :plain
 		}
 	)
