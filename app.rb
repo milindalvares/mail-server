@@ -27,7 +27,7 @@ post '/contact/:account' do
 		account_subject = "Hash Cookies Form"
 	elsif params[:account] == "yellowledger"
 	
-		account = "milindalvares@me.com"
+		account = "support@yellowledger.com"
 		account_subject = "Yellow Ledger Form"
 	end
 	
@@ -39,14 +39,17 @@ post '/contact/:account' do
 	cm_original = params[:original]
 	page_url = request.referrer
 	form_id = params[:form_id]
+	website = params[:website]
 	
 	body = ""
 	body << "<strong>Name:</strong> #{name}<br />" unless name.nil?
 	body << "<strong>Email:</strong> #{email}<br />" unless email.nil?
 	body << "<strong>Phone:</strong> #{phone}<br />" unless phone.nil?
 	body << "<strong>Project Type:</strong> #{project_type}<br />" unless project_type.nil?
-	body << "<strong>Original Message:</strong> #{cm_original}<br />" unless name.nil?
+	body << "<strong>Original Message:</strong> #{cm_original}<br />" unless cm_original.nil?
+	body << "<strong>Website:</strong> #{website}<br />" unless website.nil?
 	body << "<strong>Message:</strong><br /> #{message}<br />" unless message.nil?
+	
 	body << "<br />Sent From Page: #{page_url}<br />"
 	body << "Form ID: #{form_id}"
 	
