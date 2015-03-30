@@ -18,12 +18,15 @@ get '/' do
 end
 
 post '/contact/:account' do
-	account = "goobimama@me.com"
+	account = "milind@hashcooki.es"
+	alt_account = ""
 	
 	if params[:account] == "hashcookies"
-		account = "milind@hashcooki.es"
+		account = "fresh@hashcooki.es"
+		alt_account = "milind@hashcooki.es"
 		account_subject = "Hash Cookies Form"
 	elsif params[:account] == "yellowledger"
+	
 		account = "milindalvares@me.com"
 		account_subject = "Yellow Ledger Form"
 	end
@@ -35,6 +38,7 @@ post '/contact/:account' do
 	message = params[:message]
 	cm_original = params[:original]
 	page_url = request.referrer
+	form_id = params[:form_id]
 	
 	body = ""
 	body << "<strong>Name:</strong> #{name}<br />" unless name.nil?
@@ -43,19 +47,21 @@ post '/contact/:account' do
 	body << "<strong>Project Type:</strong> #{project_type}<br />" unless project_type.nil?
 	body << "<strong>Original Message:</strong> #{cm_original}<br />" unless name.nil?
 	body << "<strong>Message:</strong><br /> #{message}<br />" unless message.nil?
-	body << "<br />Sent From Page: #{page_url}"
+	body << "<br />Sent From Page: #{page_url}<br />"
+	body << "Form ID: #{form_id}"
 	
 	Pony.mail(
-		:from => "#{name}<milind@hashcooki.es>",
+		:from => "Hash Cookies Form Mailer<noreply@hashcooki.es>",
 		:to => account,
+		:bcc => alt_account,
 		:subject => account_subject,
 		:html_body => body,
 		:via => :smtp,
 		:via_options => {
 			  :address              => 'smtp.sendgrid.net', 
 	        :port                 => '587', 
-				:user_name            => 'milind@hashcooki.es', 
-				:password             => 'N_y81H9kFFX5E9DObShfLA',  
+				:user_name            => '', 
+				:password             => '',  
 	        :authentication       => :plain
 		}
 	)
