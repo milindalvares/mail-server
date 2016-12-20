@@ -20,17 +20,17 @@ end
 post '/contact/:account' do
 	account = "milind@hashcooki.es"
 	alt_account = ""
-	
+
 	if params[:account] == "hashcookies"
 		account = "fresh@hashcooki.es"
 		alt_account = "milind@hashcooki.es"
 		account_subject = "Hash Cookies Form"
 	elsif params[:account] == "yellowledger"
-	
+
 		account = "support@yellowledger.com"
 		account_subject = "Yellow Ledger Form"
 	end
-	
+
 	name = params[:name]
 	email = params[:email]
 	phone = params[:phone]
@@ -40,7 +40,7 @@ post '/contact/:account' do
 	page_url = request.referrer
 	form_id = params[:form_id]
 	website = params[:website]
-	
+
 	body = ""
 	body << "<strong>Name:</strong> #{name}<br />" unless name.nil?
 	body << "<strong>Email:</strong> #{email}<br />" unless email.nil?
@@ -49,10 +49,10 @@ post '/contact/:account' do
 	body << "<strong>Original Message:</strong> #{cm_original}<br />" unless cm_original.nil?
 	body << "<strong>Website:</strong> #{website}<br />" unless website.nil?
 	body << "<strong>Message:</strong><br /> #{message}<br />" unless message.nil?
-	
+
 	body << "<br />Sent From Page: #{page_url}<br />"
 	body << "Form ID: #{form_id}"
-	
+
 	Pony.mail(
 		:from => "Hash Cookies Form Mailer<noreply@hashcooki.es>",
 		:to => account,
@@ -61,10 +61,35 @@ post '/contact/:account' do
 		:html_body => body,
 		:via => :smtp,
 		:via_options => {
-			  :address              => 'smtp.sendgrid.net', 
-	        :port                 => '587', 
-				:user_name            => '', 
-				:password             => '',  
+			  :address              => 'smtp.sendgrid.net',
+	        :port                 => '587',
+				:user_name            => '',
+				:password             => '',
+	        :authentication       => :plain
+		}
+	)
+	return true
+end
+
+post '/secretsanta/:account' do
+	account = params[:account]
+
+	name = params[:name]
+
+	body = ""
+	body << "<strong>You have been assigned</strong> #{name}<br />" unless name.nil?
+
+	Pony.mail(
+		:from => "Hash Cookies Secret Santa<noreply@hashcooki.es>",
+		:to => account,
+		:subject => "Secret Santa Assignment",
+		:html_body => body,
+		:via => :smtp,
+		:via_options => {
+			  :address              => 'smtp.sendgrid.net',
+	        :port                 => '587',
+				:user_name            => '',
+				:password             => '',
 	        :authentication       => :plain
 		}
 	)
