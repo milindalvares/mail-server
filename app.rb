@@ -95,3 +95,26 @@ post '/secretsanta/:account' do
 	)
 	return true
 end
+
+post '/invoices' do
+	account = params[:account]
+	from = params[:from]
+	body = params[:body]
+	subject =  params[:subject]
+	
+	Pony.mail(
+		:from => from,
+		:to => account,
+		:subject => subject,
+		:html_body => body,
+		:via => :smtp,
+		:via_options => {
+	    :address              => 'smtp.gmail.com',
+	    :port                 => '587',
+	    :user_name            => 'lateshkudnekar@gmail.com',
+	    :password             => '9730562294',
+	    :authentication       => :plain
+  	}
+	)
+	return true
+end
