@@ -96,26 +96,25 @@ post '/secretsanta/:account' do
 	return true
 end
 
-post '/invoices/:account' do
+post '/invoices' do
 	account = params[:account]
 	from = params[:from]
-
-	body = ""
-	body << "<strong>You have new document<br />"
-
+	body = params[:body]
+	subject =  params[:subject]
+	
 	Pony.mail(
 		:from => from,
 		:to => account,
-		:subject => "Invoices Notification",
+		:subject => subject,
 		:html_body => body,
 		:via => :smtp,
 		:via_options => {
-			  :address              => 'smtp.sendgrid.net',
-	        :port                 => '587',
-				:user_name            => '',
-				:password             => '',
-	        :authentication       => :plain
-		}
+	    :address              => 'smtp.gmail.com',
+	    :port                 => '587',
+	    :user_name            => 'lateshkudnekar@gmail.com',
+	    :password             => '9730562294',
+	    :authentication       => :plain
+  	}
 	)
 	return true
 end
