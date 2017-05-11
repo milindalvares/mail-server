@@ -7,8 +7,6 @@ configure do
 	enable :cross_origin
 end
 
-
-
 get '/hi' do
 	erb :home
 end
@@ -83,6 +81,34 @@ post '/secretsanta/:account' do
 		:from => "Hash Cookies Secret Santa<noreply@hashcooki.es>",
 		:to => account,
 		:subject => "Secret Santa Assignment",
+		:html_body => body,
+		:via => :smtp,
+		:via_options => {
+			  :address              => 'smtp.sendgrid.net',
+	        :port                 => '587',
+				:user_name            => '',
+				:password             => '',
+	        :authentication       => :plain
+		}
+	)
+	return true
+end
+
+post '/gmm-volunteer/' do
+
+	to = params[:to]
+	name = params[:fullname]
+	contact = params[:contact]
+	worktime = params[:worktime]
+	body = ""
+	body << "<strong>Name</strong> #{name}" unless name.nil?
+	body << "<strong>Contact</strong> #{contact}" unless contact.nil?
+	body << "<strong>Name</strong> #{worktime}" unless worktime.nil?
+
+	Pony.mail(
+		:from => "Hash Cookies Secret Santa<noreply@goenchimati.org>",
+		:to => account,
+		:subject => "Message From Goenchimati Volunteer",
 		:html_body => body,
 		:via => :smtp,
 		:via_options => {
