@@ -75,9 +75,14 @@ post '/secretsanta/:account' do
 	account = params[:account]
 
 	name = params[:name]
+	message = params[:message]
+	recepient_hash = params[:recepient_hash]
 
 	body = ""
-	body << "<strong>You have been assigned</strong> #{name}<br />" unless name.nil?
+	body << "Hi, you are secret santa to #{name}. <br />" unless name.nil?
+	body << "You also have a secret santa of your own! You can't know who they are but you can write them a wishlist by <a href='http://hashcooki.es/secret-santa/send-wishlist/#{recepient_hash}'>clicking this link.</a><br />" unless recepient_hash.nil?
+	body << "#{message}<br />" unless message.nil?
+	body << "<small>You're receiving this email because someone entered your email and name in the <a href='http://hashcooki.es/secret-santa'>secret santa randomiser</a>. You are not subscribed to any mailing list.</small><br />"
 
 	Pony.mail(
 		:from => "Hash Cookies Secret Santa<noreply@hashcooki.es>",
@@ -94,4 +99,27 @@ post '/secretsanta/:account' do
 		}
 	)
 	return true
+end
+
+post '/secretsanta/' do
+
+	message = params[:message]
+	body = ""
+	body << "Hi, your santee, without knowing who you are, has sent you this message…<br /> #{message}" unless message.nil?
+
+	Pony.mail(
+ 	 :from => "Hash Cookies Secret Santa<noreply@hashcooki.es>",
+ 	 :to => account,
+ 	 :subject => "Secret Santa Assignment",
+ 	 :html_body => body,
+ 	 :via => :smtp,
+ 	 :via_options => {
+ 			 :address              => 'smtp.sendgrid.net',
+ 				 :port                 => '587',
+ 			 :user_name            => '',
+ 			 :password             => '',
+ 				 :authentication       => :plain
+ 	 }
+  )
+  return true
 end
