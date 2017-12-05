@@ -71,17 +71,17 @@ post '/contact/:account' do
 	return true
 end
 
-post '/secretsanta/:account' do
-	account = params[:account]
-
+post '/secretsanta/' do
 	name = params[:name]
+	account = params[:email]
 	message = params[:message]
+	assigned = params[:assigned]
 	recepient_hash = params[:recepient_hash]
 
 	body = ""
-	body << "Hi, you are secret santa to #{name}. <br />" unless name.nil?
-	body << "You also have a secret santa of your own! You can't know who they are but you can write them a wishlist by <a href='http://hashcooki.es/secret-santa/send-wishlist/#{recepient_hash}'>clicking this link.</a><br />" unless recepient_hash.nil?
-	body << "#{message}<br />" unless message.nil?
+	body << "Hi <strong>#{name}</strong>, you are secret santa to #{assigned}. <br /><br />" unless name.nil?
+	body << "You also have a secret santa of your own! You can't know who they are but you can write them a wishlist by <a href='http://hashcooki.es/secret-santa/send-wishlist/#{recepient_hash}'>clicking this link.</a><br /><br />" unless recepient_hash.nil?
+	body << "#{message}<br /><br />" unless message.nil?
 	body << "<small>You're receiving this email because someone entered your email and name in the <a href='http://hashcooki.es/secret-santa'>secret santa randomiser</a>. You are not subscribed to any mailing list.</small><br />"
 
 	Pony.mail(
@@ -101,16 +101,16 @@ post '/secretsanta/:account' do
 	return true
 end
 
-post '/secretsanta/' do
-
+post '/secretsanta-wishlist/' do
+	account = params[:recipient]
 	message = params[:message]
 	body = ""
-	body << "Hi, your santee, without knowing who you are, has sent you this message…<br /> #{message}" unless message.nil?
+	body << "Hi, your Secret Santa Assignee (Santee, for short) has sent you this message…<br /> #{message}" unless message.nil?
 
 	Pony.mail(
  	 :from => "Hash Cookies Secret Santa<noreply@hashcooki.es>",
  	 :to => account,
- 	 :subject => "Secret Santa Assignment",
+ 	 :subject => "Dear Santa...",
  	 :html_body => body,
  	 :via => :smtp,
  	 :via_options => {
